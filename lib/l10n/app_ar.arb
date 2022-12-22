@@ -1,0 +1,16 @@
+{
+"newsDrawer" : "تطبيق الاخبار " ,
+"newsAppBar" : "تطبيق اخبار",
+"pick" : "أختار قسم الاخبار المفضل",
+"sports" : "الرياضة" ,
+"general" : "عام" ,
+"health": "الصحه" ,
+"science" : "العلوم",
+"business" : "الاعمال" ,
+"environment" : "البيئه" ,
+"category" : "الاقسام" ,
+"settings" : "الاعدادات" ,
+"english" : "الانجليزيه" ,
+"arabic" : "العربيه" ,
+"lan" : "اللغه"
+}

@@ -1,0 +1,16 @@
+{
+"newsDrawer" : "News App!" ,
+"newsAppBar" : "News App",
+"pick" : "Pick your category  \n of interest",
+"sports" : "Sports" ,
+"general" : "General" ,
+"health": "Health" ,
+"science" : "Science",
+"business" : "Business" ,
+"environment" : "Environment" ,
+"category" : "Categories" ,
+"settings" : "Settings" ,
+"english" : "English" ,
+"arabic" : "Arabic" ,
+"lan" : "Language"
+}
