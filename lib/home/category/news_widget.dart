@@ -62,13 +62,14 @@ class _NewsContainerState extends State<NewsContainer> {
 
           if (snapshot.data?.status == "ok"){
             var newsList = snapshot.data?.articles ?? [] ;
-            return ListView.builder(
-              shrinkWrap: true,
-                itemCount: newsList.length,
-                controller: scrollController,
-                itemBuilder: (context , index){
-                  return  NewsItem(news: newsList[index]) ;
-                });
+            return Expanded(
+              child: ListView.builder(
+                  itemCount: newsList.length,
+                  controller: scrollController,
+                  itemBuilder: (context , index){
+                    return  NewsItem(news: newsList[index]) ;
+                  }),
+            );
           } return Text(snapshot.data?.message ?? "") ;
         }) ;
   }
