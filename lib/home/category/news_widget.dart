@@ -42,9 +42,9 @@ class _NewsContainerState extends State<NewsContainer> {
   Widget build(BuildContext context) {
     return FutureBuilder<NewsResponse>(
         future: !atBottom
-        ?ApiManager.getNews(widget.source.id ?? ""):
+        ?ApiManager.getNews(sourceId: widget.source.id ?? ""):
         ApiManager.getNews(
-           widget.source.id ?? '', page: ++pageNumber),
+           sourceId: widget.source.id ?? "", page: ++pageNumber),
         builder: (context , snapshot){
           if (snapshot.connectionState == ConnectionState.waiting){
             return CircularProgressIndicator();
@@ -54,12 +54,11 @@ class _NewsContainerState extends State<NewsContainer> {
                 Text("SomeThing went wrong") ,
                 ElevatedButton(
                     onPressed: (){
-                      ApiManager.getNews(widget.source.id ?? "");
+                      ApiManager.getNews(sourceId: widget.source.id ?? "");
                     }, child: Text("Try again"))
               ],
             );
           }
-
           if (snapshot.data?.status == "ok"){
             var newsList = snapshot.data?.articles ?? [] ;
             return Expanded(
