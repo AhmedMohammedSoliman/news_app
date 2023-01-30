@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/home/category/newsItem.dart';
+import 'package:news_app/home/category/news_widget_view_model.dart';
 import 'package:news_app/model/SourceResponse.dart';
 
 import '../../model/NewsResponse.dart';
@@ -14,44 +15,40 @@ class NewsContainer extends StatefulWidget{
 }
 
 class _NewsContainerState extends State<NewsContainer> {
-  int pageNumber = 0;
-  final ScrollController scrollController = ScrollController();
-  bool atBottom = false;
+  NewsWidgetViewModel newsWidgetViewModel = NewsWidgetViewModel();
+  var controller = ScrollController();
+  bool shouldLoadingNextPage = false ;
+  List<News> newsList = [];
+  int oldPage = 1 ;
 
   @override
   void initState() {
-    super.initState();
-    scrollController.addListener(() {
-      if (scrollController.position.atEdge) {
-        if (scrollController.position.pixels == 0) {
-          bool isTop = scrollController.position.pixels == 0;
-          if (!isTop) {
-            atBottom = true;
-            setState(() {});
-          }
+    controller.addListener(() {
+      if (controller.position.atEdge){
+        bool isTop = controller.position.pixels == 0 ;
+        if (!isTop){
+          shouldLoadingNextPage = true ;
+          setState((){});
         }
       }
     });
-  }
-  @override
-  void dispose() {
-    scrollController.dispose();
-    super.dispose();
+    super.initState();
   }
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<NewsResponse>(
-        future: !atBottom
-        ?ApiManager.getNews(sourceId: widget.source.id ?? ""):
-        ApiManager.getNews(
-           sourceId: widget.source.id ?? "", page: ++pageNumber),
+    if (shouldLoadingNextPage == true){
+      ApiManager.getNews(sourceId: widget.source.id ?? "" , page: ++oldPage).then((newsResponse) {
+        newsList.addAll(newsResponse.articles ?? []);
+        shouldLoadingNextPage = false ;
+        setState((){});
+      });
+    }return FutureBuilder<NewsResponse>(
+        future: newsWidgetViewModel.getNewsFun(sourceId: widget.source.id ?? ""),
         builder: (context , snapshot){
-          if (snapshot.connectionState == ConnectionState.waiting){
-            return CircularProgressIndicator();
-          }else if (snapshot.hasError){
+          if (snapshot.hasError){
             return Column(
               children: [
-                Text("SomeThing went wrong") ,
+                Text(snapshot.error.toString()) ,
                 ElevatedButton(
                     onPressed: (){
                       ApiManager.getNews(sourceId: widget.source.id ?? "");
@@ -60,16 +57,25 @@ class _NewsContainerState extends State<NewsContainer> {
             );
           }
           if (snapshot.data?.status == "ok"){
-            var newsList = snapshot.data?.articles ?? [] ;
+            if(newsList.isEmpty){
+              newsList = snapshot.data?.articles ?? [] ;
+            }else if (newsList[0].title != snapshot.data?.articles![0].title){
+              newsList = snapshot.data?.articles ?? [] ;
+            }
             return Expanded(
               child: ListView.builder(
                   itemCount: newsList.length,
-                  controller: scrollController,
+                  controller: controller,
                   itemBuilder: (context , index){
                     return  NewsItem(news: newsList[index]) ;
                   }),
             );
-          } return Text(snapshot.data?.message ?? "") ;
-        }) ;
+          }
+          else if (snapshot.connectionState == ConnectionState.waiting){
+          return CircularProgressIndicator();
+          }
+          return Text(snapshot.data?.message ?? "") ;
+          }) ;
+
   }
 }
