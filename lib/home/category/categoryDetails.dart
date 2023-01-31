@@ -26,7 +26,7 @@ class _CategoryDetailsState extends State<CategoryDetails> {
   }
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<SourceResponse>(
+    return FutureBuilder<SourceResponse?>(
         future: categoryDetailsViewModel.getSources(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {

@@ -42,7 +42,7 @@ class _NewsContainerState extends State<NewsContainer> {
         shouldLoadingNextPage = false ;
         setState((){});
       });
-    }return FutureBuilder<NewsResponse>(
+    }return FutureBuilder<NewsResponse?>(
         future: newsWidgetViewModel.getNewsFun(sourceId: widget.source.id ?? ""),
         builder: (context , snapshot){
           if (snapshot.hasError){
@@ -51,7 +51,7 @@ class _NewsContainerState extends State<NewsContainer> {
                 Text(snapshot.error.toString()) ,
                 ElevatedButton(
                     onPressed: (){
-                      ApiManager.getNews(sourceId: widget.source.id ?? "");
+                      newsWidgetViewModel.getNewsFun(sourceId: widget.source.id ?? "");
                     }, child: Text("Try again"))
               ],
             );

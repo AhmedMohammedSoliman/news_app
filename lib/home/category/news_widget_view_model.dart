@@ -6,7 +6,7 @@ import '../../model/NewsResponse.dart';
 
 class NewsWidgetViewModel {
   MainRepository mainRepository = MainRepositoryImpl(RemoteDataSourcesImpl(), LocalDataSourceImpl());
-  Future<NewsResponse>getNewsFun ({String? sourceId, int page = 1 , String? query}){
+  Future<NewsResponse?>getNewsFun ({String? sourceId, int page = 1 , String? query}){
     return mainRepository.getNews();
   }
   }

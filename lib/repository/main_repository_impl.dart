@@ -13,11 +13,12 @@ class MainRepositoryImpl implements MainRepository{
   MainRepositoryImpl(this.remoteDataSource , this.localDataSource);
 
   @override
-  Future<SourceResponse> getSources(String categoryId) async {
+  Future<SourceResponse?> getSources(String categoryId) async {
     /// data and cash
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.wifi || connectivityResult == ConnectivityResult.mobile){
       var response = await remoteDataSource.getSources(categoryId);
+      localDataSource.saveSourcesInFireBase(response!, categoryId);
       return response ;
     }else {
       return localDataSource.getSources(categoryId);
@@ -25,11 +26,12 @@ class MainRepositoryImpl implements MainRepository{
   }
 
   @override
-  Future<NewsResponse> getNews({String? sourceId, int page = 1, String? query}) async {
+  Future<NewsResponse?> getNews({String? sourceId, int page = 1, String? query}) async {
     /// data and cash
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.wifi || connectivityResult == ConnectivityResult.mobile){
       var response = await remoteDataSource.getNews();
+      localDataSource.saveNewsInFireBase(response!, sourceId!);
       return response ;
     }else {
       return localDataSource.getNews();

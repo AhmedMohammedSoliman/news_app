@@ -9,7 +9,7 @@ class CategoryDetailsViewModel {
   late CategoryItem categoryItem ;
   MainRepository mainRepository = MainRepositoryImpl(RemoteDataSourcesImpl(), LocalDataSourceImpl());
 
-  Future<SourceResponse>getSources (){
+  Future<SourceResponse?>getSources (){
    return mainRepository.getSources(categoryItem.id);
   }
 }

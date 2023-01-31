@@ -6,12 +6,12 @@ import '../../../model/api_funs.dart';
 
 class RemoteDataSourcesImpl implements RemoteDataSource{
   @override
-  Future<SourceResponse> getSources(String categoryId) {
+  Future<SourceResponse?> getSources(String categoryId) {
     return ApiManager.getSources(categoryId);
   }
 
   @override
-  Future<NewsResponse> getNews({String? sourceId, int page = 1, String? query}) {
+  Future<NewsResponse?> getNews({String? sourceId, int page = 1, String? query}) {
     return ApiManager.getNews();
   }
 
